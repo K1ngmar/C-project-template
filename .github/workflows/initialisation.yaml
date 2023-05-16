@@ -6,7 +6,6 @@ permissions: write-all
 
 jobs:
   check_secret_ingredients:
-    if: ${{ !contains (github.repository, '/cookiecutter-pypackage') }}
     runs-on: ubuntu-latest
     env: 
       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
