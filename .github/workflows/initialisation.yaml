@@ -51,7 +51,7 @@ jobs:
           push_options: --force
     
   decorate:
-    needs: bake
+    needs: setup_repo
     runs-on: ubuntu-latest
     steps:
       - name: Setup Branch Protection
