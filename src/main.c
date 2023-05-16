@@ -1,5 +1,5 @@
 
-#include "${REPOSITORY_NAME}/${REPOSITORY_NAME}.h"
+#include "{PROJECT_NAME}/{PROJECT_NAME}.h"
 #include "libkm/stdio/printf.h"
 
 int main(void argc, char** argv)

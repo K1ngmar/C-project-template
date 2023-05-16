@@ -1,7 +1,7 @@
 ifndef SETTINGS_MK
 SETTINGS_MK = 1
 
-NAME	= ${REPOSITORY_NAME}
+NAME	= {PROJECT_NAME}
 
 CFLAGS	= -Wall -Wextra -Werror -O3
 IFLAGS	= $(addprefix -I, $(IDIR))
