@@ -26,12 +26,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: set_project_name
         env:
-          # This matches the cookiecutter `package_name` as github replaces ` ` for `-` automatically
           REPOSITORY_NAME: ${{ github.event.repository.name }}
-          DESCRIPTION: ${{ github.event.repository.description }}
-          AUTHOR_NAME: ${{ github.event.head_commit.author.name }}
-          AUTHOR_EMAIL: ${{ github.event.head_commit.author.email }}
-          AUTHOR_GH_HANDLE: ${{ github.event.repository.owner.login }}
         run: | 
           mv includes/{PROJECT_NAME} includes/${REPOSITORY_NAME}
           mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
@@ -42,7 +37,7 @@ jobs:
           commit_message: "Initial project setup"
           push_options: --force
     
-  decorate:
+  protect_main_branch:
     needs: setup_repo
     runs-on: ubuntu-latest
     steps:
@@ -71,3 +66,23 @@ jobs:
               },
               restrictions: null,
             });
+
+  remove_setup_workflow:
+    runs-on: ubuntu-latest
+    needs:   protect_main_branch
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # only take the HEAD from template (not the history aswell)
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+      - name: set_project_name
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: | 
+          rm -f .github/workflows/initialisation.yaml
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Initial project setup"
+          push_options: --force
