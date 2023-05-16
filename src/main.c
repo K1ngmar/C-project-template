@@ -1,11 +1,11 @@
 
 #include "{PROJECT_NAME}/{PROJECT_NAME}.h"
-#include "libkm/stdio/printf.h"
+#include <libkm/io/printf.h>
 
-int main(void argc, char** argv)
+int main(int argc, char** argv)
 {
 	(void)argc;
 	(void)argv;
-	km_printf("hello world!");
+	km_printf("hello world!\n");
 	return 0;
 }
