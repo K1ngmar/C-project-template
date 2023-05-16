@@ -32,6 +32,7 @@ jobs:
           mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
           sed -i "s/PROJECT_NAME/${REPOSITORY_NAME}/g" includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
           sed -i "s/{PROJECT_NAME}/${REPOSITORY_NAME}/g" src/main.c make_settings/settings.mk
+          rm -f .github/workflows/initialisation.yaml
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Initial project setup"
@@ -62,23 +63,3 @@ jobs:
               },
               restrictions: null,
             });
-
-  remove_setup_workflow:
-    runs-on: ubuntu-latest
-    needs:   protect_main_branch
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          # only take the HEAD from template (not the history aswell)
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - name: set_project_name
-        env:
-          REPOSITORY_NAME: ${{ github.event.repository.name }}
-        run: | 
-          rm -f .github/workflows/initialisation.yaml
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Initial project setup"
-          push_options: --force
