@@ -35,8 +35,8 @@ jobs:
         run: | 
           mv includes/{PROJECT_NAME} includes/${REPOSITORY_NAME}
           mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
-          sed -i 's/PROJECT_NAME/${REPOSITORY_NAME}/g' includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
-          sed -i 's/{PROJECT_NAME}/${REPOSITORY_NAME}/g' src/main.c make_settings/settings.mk
+          sed -i "s/PROJECT_NAME/${REPOSITORY_NAME}/g" includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
+          sed -i "s/{PROJECT_NAME}/${REPOSITORY_NAME}/g" src/main.c make_settings/settings.mk
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Initial project setup"
