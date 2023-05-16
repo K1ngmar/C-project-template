@@ -1,0 +1,73 @@
+name: Initialise repo
+
+on: [push]
+
+permissions: write-all
+
+jobs:
+  check_secret_ingredients:
+    if: ${{ !contains (github.repository, '/cookiecutter-pypackage') }}
+    runs-on: ubuntu-latest
+    env: 
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+    steps:
+      - name: PAT Secret is set
+        run: |
+          [ ! $PERSONAL_ACCESS_TOKEN = "" ]
+
+  setup_repo:
+    runs-on: ubuntu-latest
+    needs: check_secret_ingredients
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # only take the HEAD from template (not the history aswell)
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+      - name: set_project_name
+        env:
+          # This matches the cookiecutter `package_name` as github replaces ` ` for `-` automatically
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          DESCRIPTION: ${{ github.event.repository.description }}
+          AUTHOR_NAME: ${{ github.event.head_commit.author.name }}
+          AUTHOR_EMAIL: ${{ github.event.head_commit.author.email }}
+          AUTHOR_GH_HANDLE: ${{ github.event.repository.owner.login }}
+          TEMP_DIR_NAME: "a_temporary_directory_for_temporary_usage_ofcourse"
+        run: | 
+          mv includes/{PROJECT_NAME} includes/$(REPOSITORY_NAME)
+          mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/$(REPOSITORY_NAME).h
+          sed -i 's/PROJECT_NAME/${REPOSITORY_NAME}/g' includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
+          sed -i 's/{PROJECT_NAME}/$(REPOSITORY_NAME}/g src/main.c make_settings/settings.mk
+          find . -not -path "./${REPOSITORY_NAME}/*" -not -path "./.git/*" -type f -delete
+          find . -type d -empty -delete
+          mv ${REPOSITORY_NAME} ${TEMP_DIR_NAME}
+          shopt -s dotglob
+          mv ${TEMP_DIR_NAME}/* .
+          rm -r ${TEMP_DIR_NAME}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Initial project setup"
+          push_options: --force
+    
+  decorate:
+    needs: bake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Branch Protection
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          script: |
+            github.rest.repos.updateBranchProtection({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: "main",
+              required_status_checks: {
+                strict: true,
+                contexts: []
+              },
+              enforce_admins: false,
+              required_pull_request_reviews: null,
+              restrictions: null,
+            });
