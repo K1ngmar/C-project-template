@@ -10,7 +10,7 @@ $ git clone --recurse-submodules {REPOSITORY_URL}
 $ make -C {PROJECT_NAME}
 
 # Run the program!
-$ ./{PROJECT_NAME}
+$ ./{PROJECT_NAME}/{PROJECT_NAME}
 ```
 
 # 🧡 Project tempalate
