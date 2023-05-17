@@ -27,7 +27,7 @@ jobs:
       - name: set_project_name
         env:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
-          REPOSITORY_URL: ${{ github.event.respository.url }}
+          REPOSITORY_URL: ${{ github.event.repository.url }}
         run: | 
           mv includes/{PROJECT_NAME} includes/${REPOSITORY_NAME}
           mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
