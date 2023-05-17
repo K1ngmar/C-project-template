@@ -55,5 +55,6 @@ dkms.conf
 # vscode...
 .vscode
 
-# other..
-symlinko
+# build folder
+.obj
+{PROJECT_NAME}
