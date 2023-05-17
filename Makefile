@@ -9,7 +9,7 @@ all: $(NAME)
 # Compilation
 $(NAME): $(LIBKM) $(OBJ)
 	@echo "$(COLOR_GREEN)Creating $(NAME) executable...$(COLOR_RESET)"
-	@$(CXX) -o $@ $(OBJ) $(LIBKM_LIB) $(LFLAGS) $(CFLAGS)
+	@$(CC) -o $@ $(OBJ) $(LIBKM_LIB) $(LFLAGS) $(CFLAGS)
 
 $(OBJ): $(ODIR)/%.o: $(SDIR)/%.c
 	@mkdir -p $(@D)
