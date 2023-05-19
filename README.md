@@ -17,7 +17,7 @@ Are you tired of manually copying, pasting and renaming files when you start a n
 git clone --recurse-submodules https://github.com/you/your-repo
 
 # or if you already cloned without --recurse-submodules
-cd your-repo && git submodule init
+cd your-repo && git submodule init && git submodule update
 ```
 
 6. Enjoy your fully setup project! It really is that easy!
