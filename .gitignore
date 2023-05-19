@@ -58,3 +58,4 @@ dkms.conf
 # build folder
 .obj
 {PROJECT_NAME}
+!includes/{PROJECT_NAME}/
