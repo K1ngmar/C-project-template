@@ -11,10 +11,12 @@ $(NAME): $(LIBKM) $(OBJ)
 	@echo "$(COLOR_GREEN)Creating $(NAME) executable...$(COLOR_RESET)"
 	@$(CC) -o $@ $(OBJ) $(LIBKM_LIB) $(LFLAGS) $(CFLAGS)
 
+-include $(DEPENDENCIES)
+
 $(OBJ): $(ODIR)/%.o: $(SDIR)/%.c
 	@mkdir -p $(@D)
 	@echo "$(COLOR_LBLUE)Compiling...	$(COLOR_BLUE)$<$(COLOR_RESET)"
-	@$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+	@$(CC) -c -o $@ $< $(CFLAGS) -MMD -MP $(IFLAGS)
 
 $(LIBKM):
 	@$(MAKE) -C $(LIBKM_LOCATION)

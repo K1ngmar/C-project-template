@@ -10,6 +10,8 @@ SDIR	= src
 ODIR	= .obj
 IDIR	= includes libkm/includes
 
+DEPENDENCIES := $(patsubst %.c,.obj/%.d,$(SRC))
+
 ifdef DEBUG
 	CFLAGS += -g -D DEBUG
 endif
