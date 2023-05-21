@@ -7,6 +7,7 @@ include $(SETTINGS_DIR)/colors.mk
 all: $(NAME)
 
 # Compilation
+
 $(NAME): $(LIBKM) $(OBJ)
 	@echo "$(COLOR_GREEN)Creating $(NAME) executable...$(COLOR_RESET)"
 	@$(CC) -o $@ $(OBJ) $(LIBKM_LIB) $(LFLAGS) $(CFLAGS)
@@ -22,7 +23,6 @@ $(LIBKM):
 	@$(MAKE) -C $(LIBKM_LOCATION)
 
 # Clean up
-.PHONY: clean fclean re
 
 clean:
 	@echo "$(COLOR_YELLOW)clean $(NAME)... $(COLOR_RESET)"
@@ -36,14 +36,24 @@ fclean: clean
 	@$(MAKE) fclean -C $(LIBKM_LOCATION)
 	@printf "$(COLOR_RED)"
 	$(RM) $(NAME)
+	$(RM) -rf $(UNIT_BIN)
 	@printf "$(COLOR_RESET)"
 
 re: fclean
 	@$(MAKE) re -C $(LIBKM_LOCATION)
 	@$(MAKE) all
 
-# phony
-.PHONY: debug fsanitize
+# Unit tests
+
+$(UNIT_DIR)/bin/%: $(UNIT_DIR)/%.c
+	@mkdir -p $(UNIT_DIR)/bin
+	@echo "$(COLOR_LBLUE)Compiling tests... $(COLOR_BLUE)$<$(COLOR_RESET)"
+	@$(CC) $(CFLAGS) $(IFLAGS) $< $(UNIT_OBJ) -o $@ -lcriterion $(LIBKM_LIB)
+
+unit_test_build: $(NAME) $(UNIT_DIR) $(UNIT_BIN)
+
+unit_test: unit_test_build
+	@sh $(UNIT_DIR)/run_tests.sh
 
 # Debugging
 debug: fclean
@@ -60,3 +70,6 @@ fsanitize: fclean
 	@echo "$(COLOR_YELLOW)Building $(NAME) fsanitize... $(COLOR_RESET)"
 	@$(MAKE) fsanitize -C $(LIBKM_LOCATION)
 	@$(MAKE) FSANITIZE=1
+
+# Phony
+.PHONY: debug fsanitize test clean fclean re

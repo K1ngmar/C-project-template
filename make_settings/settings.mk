@@ -12,6 +12,12 @@ IDIR	= includes libkm/includes
 
 DEPENDENCIES := $(patsubst %.c,.obj/%.d,$(SRC))
 
+TEST_DIR = tests
+UNIT_DIR = $(TEST_DIR)/unit_tests
+
+UNIT_TESTS = $(wildcard $(UNIT_DIR)/*.c)
+UNIT_BIN = $(patsubst $(UNIT_DIR)/%.c, $(UNIT_DIR)/bin/%, $(UNIT_TESTS))
+
 ifdef DEBUG
 	CFLAGS += -g -D DEBUG
 endif
@@ -27,5 +33,6 @@ endif
 
 include ./make_settings/src.mk
 OBJ := $(addprefix $(ODIR)/, $(SRC:.c=.o))
+UNIT_OBJ := $(filter-out $(ODIR)/main.o,$(OBJ))
 
 endif
