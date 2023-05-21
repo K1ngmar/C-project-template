@@ -33,7 +33,7 @@ jobs:
           mv includes/${REPOSITORY_NAME}/{PROJECT_NAME}.h includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
           mv Project.md README.md
           sed -i "s/PROJECT_NAME/${REPOSITORY_NAME}/g" includes/${REPOSITORY_NAME}/${REPOSITORY_NAME}.h
-          sed -i "s/{PROJECT_NAME}/${REPOSITORY_NAME}/g" src/main.c make_settings/settings.mk README.md .gitignore utility/some-file.c tests/unit_tests/some-test.c
+          sed -i "s/{PROJECT_NAME}/${REPOSITORY_NAME}/g" src/main.c make_settings/settings.mk README.md .gitignore src/utility/some-file.c tests/unit_tests/some-test.c
           sed -i "s!{REPOSITORY_URL}!${REPOSITORY_URL}!g" README.md
           rm -f .github/workflows/initialisation.yaml
       - uses: stefanzweifel/git-auto-commit-action@v4
