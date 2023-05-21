@@ -22,10 +22,12 @@ jobs:
       run: sudo apt-get install libcriterion-dev
     - name: Install Additional libraries
       run: sudo apt-get install libbsd-dev
-    - name: Build
-      run: make test_build
-    - name: run_test
-      run: sh tests/run_tests.sh
+    - name: Build project
+      run: make
+    - name: Build unit tests/run_tests.sh
+      run: make unit_test_build
+    - name: Run unit test
+      run: sh tests/unit_tests/run_tests.sh
 
   macos:
 
@@ -39,7 +41,9 @@ jobs:
       run: brew update
     - name: Install Criterion
       run: brew install criterion
-    - name: Build
-      run: make test_build
-    - name: run_test
-      run: sh tests/run_tests.sh
+    - name: Build project
+      run: make
+    - name: Build unit tests/run_tests.sh
+      run: make unit_test_build
+    - name: Run unit test
+      run: sh tests/unit_tests/run_tests.sh
