@@ -26,4 +26,6 @@ cd your-repo && git submodule init && git submodule update
 
 - Setup your project, with custom filenames, etc.
 - Protect your main branch!
+- Setup automated unit testing with github actions!
+- License your project!
 - Reduce your headaches!
